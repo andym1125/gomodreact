@@ -1,47 +1,38 @@
-import React, {Component, ReactElement, ReactNode, useState } from "react";
+import React, {Component, ReactElement, ReactNode, useEffect, useState } from "react";
 import graphFromText from "../calc/graph-funcs";
 import FileSelector from "./FileSelector";
 import Graph, { GraphNode } from "../calc/Graph"
+import { AppContext } from "./AppContext";
 
 const DependencyList = (proprs: {}) : ReactElement =>
 {
-    const [fileText, setFileText] = useState<string>();
-    const [graph, setGraph] = useState<Graph>(new Graph());
-    const [displayNodes, setDisplayNodes] = useState<GraphNode>()
+    const [files, setFiles] = useState<FileList|null>()
+    const [filetxt, setFiletxt] = useState<string>()
 
-    let it = [
-        "one",
-        "two",
-        "three"
-    ]
-
-    const onFileInput = (files: FileList|null) =>
-    {
+    //Convert files to filetxt
+    useEffect(() => {
         if(!files)
-            return;
-
-        console.log(this)
-        setGraph(new Graph([{to:"--", from:"---"}]))
+            return
         
-        files.item(0)?.stream.toString()
         files.item(0)?.text()
-        .then((text: string) =>
-        {
-            setFileText(text)
-            console.log(graphFromText(text))
-            setGraph(() => graphFromText(text))
-            
-            setInterval(()=>{console.log(graph)}, 1000)
+            .then((text: string)=>{setFiletxt(text)})
+    }, [files])
 
-            return text
-        })
+    //Convert filetxt to graph
+    useEffect(() => {
+        if(!filetxt)
+            return
+        
+        console.log(filetxt)
+    }, [filetxt])
+
+    let ctx = {
+        "files":files,
+        "setFiles":setFiles
     }
 
-    return <div>
-        <FileSelector onChange={onFileInput.bind(this)}></FileSelector>
-        {it.map((val, idx) => {
-            return <div key={idx}>{val}</div>
-        })}
-    </div>
+    return <AppContext.Provider value={ctx}>
+        <FileSelector></FileSelector>
+    </AppContext.Provider>
 }
 export default DependencyList

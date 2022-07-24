@@ -1,5 +1,6 @@
-import { Component, Dispatch, ReactElement, ReactNode, useState } from "react";
+import { Component, Dispatch, ReactElement, ReactNode, useContext, useState } from "react";
 import { textSpanContainsPosition } from "typescript";
+import { AppContext, IAppContext } from "./AppContext";
 
 
 export interface FileSelectorProps
@@ -9,13 +10,12 @@ export interface FileSelectorProps
 
 const FileSelector = (props: FileSelectorProps) : ReactElement =>
 {
-    let [files, setFiles] = useState<FileList|null>();
+    const ctx = useContext<IAppContext>(AppContext)
     
     const fsOnChange = (files: FileList|null) =>
     {
-        setFiles(files)
-        if(props.onChange)
-            props.onChange(files)
+        if(ctx.setFiles)
+            ctx.setFiles(files)
     }
 
     return <input type="file" onChange={(e)=>fsOnChange(e.currentTarget.files)}></input>
