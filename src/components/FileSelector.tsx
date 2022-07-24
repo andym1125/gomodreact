@@ -7,14 +7,14 @@ export interface FileSelectorProps
     onChange?: (files: FileList|null)=>any
 }
 
-const FileSelector = (props: FileSelectorProps|undefined) : ReactElement =>
+const FileSelector = (props: FileSelectorProps) : ReactElement =>
 {
     let [files, setFiles] = useState<FileList|null>();
     
     const fsOnChange = (files: FileList|null) =>
     {
         setFiles(files)
-        if(props?.onChange)
+        if(props.onChange)
             props.onChange(files)
     }
 

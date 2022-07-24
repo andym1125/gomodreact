@@ -8,7 +8,6 @@ export default function graphFromText(text: string) : Graph
     .filter((value) => (!!value)) //filters out space at end of file
     .map((val):Edge => {
         let edge = val.split(" ")
-        console.log(edge)
         return {
             from: edge[0],
             to: edge[1]
