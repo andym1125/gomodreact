@@ -1,4 +1,5 @@
 import React, {Component, ReactElement, ReactNode, useState } from "react";
+import graphFromText from "../calc/graph-funcs";
 import FileSelector from "./FileSelector";
 
 const DependencyList = (proprs: {}) : ReactElement =>
@@ -20,12 +21,9 @@ const DependencyList = (proprs: {}) : ReactElement =>
         .then((text: string) =>
         {
             setFileText(text)
-            console.log(text)
-            return text
-        })
-        .then((text: string) =>
-        {
+            console.log(graphFromText(text))
 
+            return text
         })
     }
 
