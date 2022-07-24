@@ -7,9 +7,10 @@ import { AppContext } from "./AppContext";
 const DependencyList = (proprs: {}) : ReactElement =>
 {
     const [files, setFiles] = useState<FileList|null>()
+    const [graph, setGraph] = useState<Graph>()
     const [filetxt, setFiletxt] = useState<string>()
 
-    //Convert files to filetxt
+    //files change
     useEffect(() => {
         if(!files)
             return
@@ -18,17 +19,27 @@ const DependencyList = (proprs: {}) : ReactElement =>
             .then((text: string)=>{setFiletxt(text)})
     }, [files])
 
-    //Convert filetxt to graph
+    //filetxt change
     useEffect(() => {
         if(!filetxt)
             return
         
-        console.log(filetxt)
+        setGraph(graphFromText(filetxt))
     }, [filetxt])
+
+    //graph change
+    useEffect(() => {
+        if(!graph)
+            return
+        
+        //console.log(graph)
+    }, [graph])
 
     let ctx = {
         "files":files,
-        "setFiles":setFiles
+        "setFiles":setFiles,
+        "graph": graph,
+        "setGraph": setGraph,
     }
 
     return <AppContext.Provider value={ctx}>
