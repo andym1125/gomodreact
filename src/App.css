@@ -1,5 +1,12 @@
 .DependencyList {
   background-color: red;
+  flex: 1
+}
+
+.directory-container
+{
+  flex-direction: row;
+  display: flex;
 }
 
 .App {

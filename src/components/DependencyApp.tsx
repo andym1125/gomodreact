@@ -1,14 +1,19 @@
-import React, {Component, ReactElement, ReactNode, useEffect, useState } from "react";
+import React, {Component, CSSProperties, ReactElement, ReactNode, useEffect, useState } from "react";
 import graphFromText from "../calc/graph-funcs";
 import FileSelector from "./FileSelector";
 import Graph, { GraphNode } from "../calc/Graph"
 import { AppContext } from "./AppContext";
+import DependencyList from "./DependencyList";
 
 const DependencyApp = (proprs: {}) : ReactElement =>
 {
+    //Context state
     const [files, setFiles] = useState<FileList|null>()
     const [graph, setGraph] = useState<Graph>()
+
+    //Component state
     const [filetxt, setFiletxt] = useState<string>()
+    const [centerDepends, setCenterDepends] = useState<GraphNode[]>()
 
     //files change
     useEffect(() => {
@@ -32,6 +37,7 @@ const DependencyApp = (proprs: {}) : ReactElement =>
         if(!graph)
             return
         
+        setCenterDepends(graph.rootNodes)
         //console.log(graph)
     }, [graph])
 
@@ -42,8 +48,20 @@ const DependencyApp = (proprs: {}) : ReactElement =>
         "setGraph": setGraph,
     }
 
+    let styles: CSSProperties = {
+        display: "flex",
+        flexDirection: "column",
+    }
+
     return <AppContext.Provider value={ctx}>
-        <FileSelector></FileSelector>
+        <div style={styles}>
+            <FileSelector></FileSelector>
+            <div className="directory-container" >
+                <DependencyList></DependencyList>
+                <DependencyList dependencies={centerDepends}></DependencyList>
+                <DependencyList></DependencyList>
+            </div>
+        </div>
     </AppContext.Provider>
 }
 export default DependencyApp
