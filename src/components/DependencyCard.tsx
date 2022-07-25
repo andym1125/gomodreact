@@ -1,14 +1,28 @@
-import { ReactElement } from "react"
+import React, { MouseEventHandler, ReactElement, MouseEvent, useState, useContext } from "react"
+import { GraphNode } from "../calc/Graph"
+import { AppContext, IAppContext } from "./AppContext"
 
 export interface DependencyCardProps
 {
-    value: string
+    node: GraphNode
 }
 
 const DependencyCard = (props: DependencyCardProps) : ReactElement =>
 {
-    return <div className="DependencyCard">
-        {props.value}
-    </div>
+    const ctx = useContext<IAppContext>(AppContext)
+
+    let onCardClick: MouseEventHandler<HTMLDivElement> = (event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) =>
+    {
+        if(ctx.setSelectedNode)
+            ctx.setSelectedNode(props.node)
+    }
+
+    return (
+        <div 
+            className={"DependencyCard" + (ctx.selectedNode === props.node ? " selected" : "")} 
+            onClick={onCardClick}>
+            {props.node.value}
+        </div>
+    )
 }
 export default DependencyCard

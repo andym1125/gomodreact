@@ -15,7 +15,7 @@ const DependencyList = (props: DependencyListProps) : ReactElement =>
             (props.dependencies)
             ?
                 props.dependencies?.map((value: GraphNode) => {
-                    return <DependencyCard key={value.id} value={value.value}></DependencyCard>
+                    return <DependencyCard key={value.id} node={value}></DependencyCard>
                 })
             :
                 ""

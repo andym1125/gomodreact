@@ -18,6 +18,13 @@
   color: white;
 }
 
+.DependencyCard.selected
+{
+  background-color: cornflowerblue;
+  color: white;
+  border: 1px solid yellow;
+}
+
 .directory-container
 {
   flex-direction: row;

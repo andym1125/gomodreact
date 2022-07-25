@@ -11,6 +11,7 @@ const DependencyApp = (proprs: {}) : ReactElement =>
     //Context state
     const [files, setFiles] = useState<FileList|null>()
     const [graph, setGraph] = useState<Graph>()
+    const [selectedNode, setSelectedNode] = useState<GraphNode>()
 
     //Component state
     const [filetxt, setFiletxt] = useState<string>()
@@ -34,7 +35,8 @@ const DependencyApp = (proprs: {}) : ReactElement =>
     }, [filetxt])
 
     //graph change
-    useEffect(() => {
+    useEffect(() =>
+    {
         if(!graph)
             return
         
@@ -42,11 +44,19 @@ const DependencyApp = (proprs: {}) : ReactElement =>
         //console.log(graph)
     }, [graph])
 
+    //selectedNode change
+    useEffect(() =>
+    {
+        console.log(selectedNode)
+    })
+
     let ctx = {
         "files":files,
         "setFiles":setFiles,
         "graph": graph,
         "setGraph": setGraph,
+        "selectedNode": selectedNode,
+        "setSelectedNode": setSelectedNode,
     }
 
     let styles: CSSProperties = {
