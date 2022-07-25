@@ -1,5 +1,6 @@
 import { useState, createContext } from "react";
 import Graph, { GraphNode } from "../calc/Graph";
+import { ISelectedNode } from "../calc/types";
 
 export interface IAppContext
 {
@@ -9,8 +10,8 @@ export interface IAppContext
     graph?: Graph
     setGraph?: React.Dispatch<React.SetStateAction<Graph|undefined>>
 
-    selectedNode?: GraphNode
-    setSelectedNode?: React.Dispatch<React.SetStateAction<GraphNode|undefined>>
+    selectedNode?: ISelectedNode
+    setSelectedNode?: React.Dispatch<React.SetStateAction<ISelectedNode|undefined>>
 }
 
 export let AppContext = createContext<IAppContext>({})

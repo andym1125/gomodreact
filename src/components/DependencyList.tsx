@@ -5,6 +5,7 @@ import DependencyCard from "./DependencyCard"
 export interface DependencyListProps
 {
     dependencies?: GraphNode[]
+    id: string
 }
 
 const DependencyList = (props: DependencyListProps) : ReactElement =>
@@ -15,7 +16,7 @@ const DependencyList = (props: DependencyListProps) : ReactElement =>
             (props.dependencies)
             ?
                 props.dependencies?.map((value: GraphNode) => {
-                    return <DependencyCard key={value.id} node={value}></DependencyCard>
+                    return <DependencyCard key={value.id} node={value} listId={props.id}></DependencyCard>
                 })
             :
                 ""

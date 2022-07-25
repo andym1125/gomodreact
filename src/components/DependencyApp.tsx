@@ -5,17 +5,20 @@ import Graph, { GraphNode } from "../calc/Graph"
 import { AppContext } from "./AppContext";
 import DependencyList from "./DependencyList";
 import { setToArray } from "../calc/lib";
+import { ISelectedNode } from "../calc/types";
 
 const DependencyApp = (proprs: {}) : ReactElement =>
 {
     //Context state
     const [files, setFiles] = useState<FileList|null>()
     const [graph, setGraph] = useState<Graph>()
-    const [selectedNode, setSelectedNode] = useState<GraphNode>()
+    const [selectedNode, setSelectedNode] = useState<ISelectedNode>()
 
     //Component state
     const [filetxt, setFiletxt] = useState<string>()
     const [centerDepends, setCenterDepends] = useState<GraphNode[]>()
+    const [parentDepends, setParentDepends] = useState<GraphNode[]>()
+    const [childDepends, setChildDepends] = useState<GraphNode[]>()
 
     //files change
     useEffect(() => {
@@ -41,14 +44,24 @@ const DependencyApp = (proprs: {}) : ReactElement =>
             return
         
         setCenterDepends(setToArray<GraphNode>(graph.rootNodes[0].children))
-        //console.log(graph)
     }, [graph])
 
     //selectedNode change
     useEffect(() =>
     {
+        if(!selectedNode)
+            return
+
         console.log(selectedNode)
-    })
+
+        if(selectedNode.list === "parent")
+            setCenterDepends(parentDepends)
+        else if (selectedNode.list === "child")
+            setCenterDepends(childDepends)
+
+        setChildDepends(setToArray(selectedNode.n.children))
+        setParentDepends(setToArray(selectedNode.n.parents))
+    }, [selectedNode])
 
     let ctx = {
         "files":files,
@@ -68,9 +81,9 @@ const DependencyApp = (proprs: {}) : ReactElement =>
         <div style={styles}>
             <FileSelector></FileSelector>
             <div className="directory-container" >
-                <DependencyList></DependencyList>
-                <DependencyList dependencies={centerDepends}></DependencyList>
-                <DependencyList></DependencyList>
+                <DependencyList id="parent" dependencies={parentDepends}></DependencyList>
+                <DependencyList id="center" dependencies={centerDepends}></DependencyList>
+                <DependencyList id="child" dependencies={childDepends}></DependencyList>
             </div>
         </div>
     </AppContext.Provider>
