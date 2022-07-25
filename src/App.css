@@ -3,6 +3,21 @@
   flex: 1
 }
 
+.DependencyCard
+{
+  background-color: lightblue;
+  color: black;
+  padding: 1em;
+  margin: 1em;
+  border-radius: 1em;
+}
+
+.DependencyCard:hover
+{
+  background-color: cornflowerblue;
+  color: white;
+}
+
 .directory-container
 {
   flex-direction: row;

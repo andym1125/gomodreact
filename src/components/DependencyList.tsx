@@ -1,5 +1,6 @@
 import { CSSProperties, ReactElement } from "react"
 import { GraphNode } from "../calc/Graph"
+import DependencyCard from "./DependencyCard"
 
 export interface DependencyListProps
 {
@@ -14,7 +15,7 @@ const DependencyList = (props: DependencyListProps) : ReactElement =>
             (props.dependencies)
             ?
                 props.dependencies?.map((value: GraphNode) => {
-                    return <li key={value.id}>{value.value}</li>
+                    return <DependencyCard key={value.id} value={value.value}></DependencyCard>
                 })
             :
                 ""

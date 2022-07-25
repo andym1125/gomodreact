@@ -4,6 +4,7 @@ import FileSelector from "./FileSelector";
 import Graph, { GraphNode } from "../calc/Graph"
 import { AppContext } from "./AppContext";
 import DependencyList from "./DependencyList";
+import { setToArray } from "../calc/lib";
 
 const DependencyApp = (proprs: {}) : ReactElement =>
 {
@@ -37,7 +38,7 @@ const DependencyApp = (proprs: {}) : ReactElement =>
         if(!graph)
             return
         
-        setCenterDepends(graph.rootNodes)
+        setCenterDepends(setToArray<GraphNode>(graph.rootNodes[0].children))
         //console.log(graph)
     }, [graph])
 
