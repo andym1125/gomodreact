@@ -16,6 +16,7 @@ const DependencyApp = (proprs: {}) : ReactElement =>
 
     //Component state
     const [filetxt, setFiletxt] = useState<string>()
+    const [history, setHistory] = useState<GraphNode[][]>([])
     const [centerDepends, setCenterDepends] = useState<GraphNode[]>()
     const [parentDepends, setParentDepends] = useState<GraphNode[]>()
     const [childDepends, setChildDepends] = useState<GraphNode[]>()
@@ -43,6 +44,11 @@ const DependencyApp = (proprs: {}) : ReactElement =>
         if(!graph)
             return
         
+        setHistory([
+            graph.rootNodes,
+            setToArray(graph.rootNodes[0].children),
+            [],
+        ])
         setCenterDepends(setToArray<GraphNode>(graph.rootNodes[0].children))
     }, [graph])
 
@@ -52,16 +58,42 @@ const DependencyApp = (proprs: {}) : ReactElement =>
         if(!selectedNode)
             return
 
-        console.log(selectedNode)
+        if(selectedNode.list == "parent")
+        {
+            //setCenterDepends(parentDepends)
+            // if(history && history.length >= 2)
+            // {
+                history.pop()
+                setHistory(history)
+            // }
+                
+        }
+        else if(selectedNode.list == "child")
+        {
+            history?.push(setToArray(selectedNode.n.children))
+            setHistory(history)
+        }
+        else if(selectedNode.list === "center")
+        {
+            history.pop()
+            history.push(setToArray(selectedNode.n.children))
+            setHistory(history)
+        }
 
-        if(selectedNode.list === "parent")
-            setCenterDepends(parentDepends)
-        else if (selectedNode.list === "child")
-            setCenterDepends(childDepends)
+        // if(selectedNode.list === "parent")
+
+        //     setCenterDepends(parentDepends)
+        // else if (selectedNode.list === "child")
+        //     setCenterDepends(childDepends)
 
         setChildDepends(setToArray(selectedNode.n.children))
         setParentDepends(setToArray(selectedNode.n.parents))
     }, [selectedNode])
+
+    useEffect(() =>
+    {
+        console.log(history)
+    }, [history])
 
     let ctx = {
         "files":files,
@@ -81,9 +113,9 @@ const DependencyApp = (proprs: {}) : ReactElement =>
         <div style={styles}>
             <FileSelector></FileSelector>
             <div className="directory-container" >
-                <DependencyList id="parent" dependencies={parentDepends}></DependencyList>
-                <DependencyList id="center" dependencies={centerDepends}></DependencyList>
-                <DependencyList id="child" dependencies={childDepends}></DependencyList>
+                <DependencyList id="parent" dependencies={history[history.length-3]}></DependencyList>
+                <DependencyList id="center" dependencies={history[history.length-2]}></DependencyList>
+                <DependencyList id="child" dependencies={history[history.length-1]}></DependencyList>
             </div>
         </div>
     </AppContext.Provider>
