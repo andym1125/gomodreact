@@ -17,9 +17,6 @@ const DependencyApp = (proprs: {}) : ReactElement =>
     //Component state
     const [filetxt, setFiletxt] = useState<string>()
     const [history, setHistory] = useState<GraphNode[][]>([])
-    const [centerDepends, setCenterDepends] = useState<GraphNode[]>()
-    const [parentDepends, setParentDepends] = useState<GraphNode[]>()
-    const [childDepends, setChildDepends] = useState<GraphNode[]>()
 
     //files change
     useEffect(() => {
@@ -49,7 +46,6 @@ const DependencyApp = (proprs: {}) : ReactElement =>
             setToArray(graph.rootNodes[0].children),
             [],
         ])
-        setCenterDepends(setToArray<GraphNode>(graph.rootNodes[0].children))
     }, [graph])
 
     //selectedNode change
@@ -60,34 +56,16 @@ const DependencyApp = (proprs: {}) : ReactElement =>
 
         if(selectedNode.list == "parent")
         {
-            //setCenterDepends(parentDepends)
-            // if(history && history.length >= 2)
-            // {
-                history.pop()
-                setHistory(history)
-            // }
-                
+                setHistory(history.slice(0, history.length-1))
         }
         else if(selectedNode.list == "child")
         {
-            history?.push(setToArray(selectedNode.n.children))
-            setHistory(history)
+            setHistory([...history, setToArray(selectedNode.n.children)])
         }
         else if(selectedNode.list === "center")
         {
-            history.pop()
-            history.push(setToArray(selectedNode.n.children))
-            setHistory(history)
+            setHistory([...history.slice(0, history.length-1), setToArray(selectedNode.n.children)])
         }
-
-        // if(selectedNode.list === "parent")
-
-        //     setCenterDepends(parentDepends)
-        // else if (selectedNode.list === "child")
-        //     setCenterDepends(childDepends)
-
-        setChildDepends(setToArray(selectedNode.n.children))
-        setParentDepends(setToArray(selectedNode.n.parents))
     }, [selectedNode])
 
     useEffect(() =>
